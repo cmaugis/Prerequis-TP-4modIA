@@ -1,0 +1,23 @@
+project:
+  type: website
+  output-dir: docs 
+
+website:
+  title: "Prérequis 4modIA "
+  navbar:
+    left:
+      - text: TP1
+        href: TP1-InitR.qmd
+      - text: TP2
+        href: TP2-Stat.qmd
+    logo: LogoINSAToulouse.jpg
+    search: true 
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+

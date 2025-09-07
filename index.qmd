@@ -1,0 +1,13 @@
+<b>
+
+<h4>Prérequis de proba/statistique de 4modIA</h4>
+
+</b>
+
+1.  TP1 : Initiation à R et à la rédaction avec Quarto
+
+2.  TP2 : 
+
+  - Partie 1 : elle est consacrée aux notions de statistiques descriptives uni- et bi-dimensionnelles.
+
+  - Partie 2 : elle est consacrée à l'illustration de notions de statistique inférentielle paramétrique revues dans les séances de remise à niveau. On n'abordera ici que le cas gaussien.

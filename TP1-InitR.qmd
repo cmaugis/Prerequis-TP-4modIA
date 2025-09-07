@@ -1,0 +1,1285 @@
+---
+title: "TP 1 : Introduction au langage R"
+subtitle : "ModIA - 4ème année - 2025-2026"
+execute:
+  echo: true
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    toc-title: Contents
+    toc-location: left
+    number-sections: true
+---
+
+**Objectif** 
+
+Les objectifs de cette séance sont 
+
++ une première prise en main du logiciel R avec la présentation de commandes de base
++ se familiariser avec RStudio 
++ débuter dans la rédaction de documents en quarto ou Rmarkdown
+
+Ce TP s'appuie sur des parties du tutoriel R disponible sur [https://cmaugis.github.io/TutorielR-V2025/](https://cmaugis.github.io/TutorielR-V2025/){target="_blank"}. 
+
+# Introduction
+
+## Pourquoi R ?
+
+Le logiciel R sous licence GNU est facile à installer à partir de la page du [CRAN](https://cran.r-project.org/index.html){target="_blank"} (ou d'un site miroir). Le CRAN contient toutes les ressources nécessaires à l'utilisateur de R, débutant ou expérimenté : fichiers d'installation, mises à jour, librairies, FAQ, newsletter, documentation... R est un logiciel très utilisé dans la communauté statistique.
+
+Dans sa structure, R est un langage de programmation d'une syntaxe voisine à celle du langage C et capable de manipuler des objets complexes sous forme de matrice, scalaire, vecteur, liste, facteur et aussi data frame. Il dispose également d'une très riche librairie de quasiment toutes les procédures et méthodes statistiques de la littérature. 
+
+## Présentation de Rstudio
+
+Nous allons utiliser [RStudio](https://rstudio.com/){target="_blank"} durant les TP d'Analyse de Données et d'Elements de modélisation statistique. RStudio n’est pas qu’une interface graphique pour R, il s’agit d’un environnement de développement intégré, proposant des outils et facilite l’écriture de scripts et l’utilisation de R. La version gratuite de RStudio étant déjà très riche en fonctionnalités, elle est suffisante pour les enseignements. Elle est disponible pour Linux, Windows et MacOS. 
+
+Après avoir installé une version récente du logiciel R (voir [CRAN](https://cran.r-project.org/index.html){target="_blank"}), installez la version gratuite de Rstudio adaptée à votre OS. 
+
+### Description des fenêtres de RStudio
+
+A chaque ouverture de RStudio, l'écran est découpé en quatre grandes zones :
+
+- En bas à gauche c'est la **Console**, on peut y lire au lancement la version de R que RStudio a chargé. Après le texte d'entrée, la ligne commence par `>` qui est l'invite de commande. RStudio est prêt à recevoir votre première commande. On peut se servir de R comme d'une calculatrice. Vous pouvez par exemple taper `> 2+3` et taper `Entrée`. Le résultat apparait alors dans la console. 
+
+- En haut à droite, on peut voir dans **Environnement** la liste des objets et fonctions créés au fur et à mesure du travail. On a également accès à l'historique des commandes dans **History**. 
+
+- En bas à droite, on trouve plusieurs onglets : 
+
+  + **Files** : permet de voir le contenu du répertoire de travail
+  + **Plots** : permet de visualiser les graphiques créés
+  + **Packages** : liste les packages installés pour les charger, mettre à jour, en installer d'autres 
+  + **Help** : permet d'accéder à l'aide en ligne
+  
+- En haut à gauche, c'est la zone d'**Edition** pour gérer les scripts, les executer, ....  
+
+Lorsque vous quittez RStudio, on vous demande si vous souhaitez sauvegarder l'environnement de travail. Si vous y répondez favorablement, un fichier de sauvegarde ` .RData` est enregistré dans le répertoire courant. 
+
+### Types de documents avec RStudio 
+
+En allant dans `File -> New File` ou en cliquant sur la flèche à côté de l'icone de *New File* (en haut à gauche), RStudio propose de nombreux types de document. Vous pouvez noter que l'on peut utiliser RStudio également pour faire du python, du C++, ... Nous allons ici ne parler que de quelques types de fichiers que l'on utilisera par la suite.
+
+Pour créer un script R, il suffit de sélectionner `R Script`. Ce script peut être enregistré à tout moment dans un fichier avec l'extension " .R" *(ex. monScript.R)* dans le répertoire courant en cliquant sur l'icône de disquette ou  par `File->Save`. Vous pouvez l'ouvrir à tout moment grâce au menu `File –> Open file...`, à l'icône dossier ou en double cliquant sur le fichier *monScript.R*. Il est également possible d'executer un script directement depuis la console grâce à la commande `source("monScript.R")`.
+
+On peut également créer des documents de type rapport, slides, ... contenant du texte, du code, des images, des formules mathématiques en latex, .... 
+
++ à l'aide de `RMarkdown` en sélectionnant `R markdown ...`. Le document créé sera sauvegardé avec l'extension " .Rmd". 
+
+Pour plus de détails, voir [ici](https://cmaugis.github.io/TutorielR-V2025/Part4-Ravance.html#le-package-rmarkdown){target="_blank"}.
+
+
++ à l'aide de `quarto` en sélectionnant `Quarto Document ...` ou `Quarto Presentation ...` pour la création de présentation, rapports, ... La syntaxe est assez proche de celle de Rmarkdown. 
+Dans la suite du cours, on travaillera avec des fichiers quarto. 
+
+Pour plus de détails, voir [ici](https://cmaugis.github.io/TutorielR-V2025/Part4-Ravance.html#r%C3%A9daction-avec-quarto){target="_blank"}.
+
+
+## Environnement
+
+### Répertoire de travail
+
+Pour pouvoir récupérer des données, maîtriser la sauvegarde des  scripts, des résultats, ... il est important de connaitre le répertoire de travail c'est-à-dire le répertoire sous lequel les divers résultats seront sauvegardés par défaut. Ce dernier s'obtient à l'aide de la commande `> getwd()`. 
+
+Pour changer de répertoire de travail, on peut 
+
+- utiliser la commande `setwd()` dans la Console. 
+A noter que R ne reconnaît que le caractère "/" pour spécifier le chemin d'accès d'un répertoire (même sous Windows). 
+- passer par `Session -> Set Working Directory -> Choose Directory`. 
+
+<p style="color:blue;">**Exercice :**</p>
+> Créez un dossier de travail pour ce TP dans votre home (en dehors de RStudio!) 
+> Placez dans ce dossier le fichier TP1-InitR.qmd disponible sur moodle. 
+> Dans RStudio, placez-vous dans ce dossier de travail pour le TP. 
+> Ouvrez le fichier TP1-InitR.qmd. Vous êtes maintenant prêt à poursuivre ce TP. 
+
+### Les librairies pour R 
+
+R est un logiciel libre, il s'enrichit grâce au développement de librairies par la communauté. La plupart des extensions sont développées et maintenues par la communauté des utilisateurs de R, et diffusées via le [CRAN (Comprehensive R Archive Network)](https://cran.r-project.org/){target="_blank"}. On peut également trouver des packages déposés sur *github* par exemple.
+
+Pour installer une librairie disponible sur le CRAN, vous avez plusieurs manières de le faire, dont  
+
++ passer par le menu `Tools-> Install Packages ...` , sélectionner un site miroir du CRAN et demander la librairie souhaitée
++ aller dans l'onglet *Packages* dans la fenêtre en bas à droite et cliquer sur *Install*. 
++ utiliser la fonction `install.packages()` directement dans la console en précisant la librairie souhaitée
+
+Toutes les librairies ne sont pas chargées automatiquement au lancement de R. Pour charger une librairie, on utilise la commande `library()`. 
+
+<p style="color:blue;">**Exercice :**</p>
+> 1. Installez la librairie *corrplot*
+> 2. Chargez la librairie *corrplot*
+
+### L'aide de R
+
+On peut à tout moment faire appel à l'aide intégrée de R (et surtout avant d'appeler l'enseignant-e !) pour avoir les détails comme les arguments d'une fonction.
+On peut accéder à l'aide pour une fonction (ex pour la fonction *plot*) en passant le nom de la fonction dans `help()` (ex `> help(plot)`) ou en utilisant le raccourci `> ?plot`. 
+Ces deux commandes permettent d'afficher une page de description (en anglais) de la fonction, ses paramètres, son résultat, d'exemples, ... Dans RStudio, les pages d'aide en ligne s'ouvriront par défaut dans la zone en bas à droite, sous l'onglet **Help**. Un clic sur l'icône en forme de maison vous affichera la page d'accueil de l'aide. Vous pouvez aussi taper directement le nom de la fonction recherchée dans la zone de recherche dans l'onglet **Help**. 
+
+<p style="color:blue;">**Exercice :**</p>
+> Accédez à l'aide de la fonction `rnorm`
+
+
+
+
+#	Structure des objets 
+Sous R, les éléments de base sont des objets : des données (vecteurs,
+matrices, ...), des fonctions, des graphiques, ...
+Ces objets se différencient par leur mode décrivant leur contenu, et leur classe décrivant leur structure.
+Les objets atomiques sont de mode homogène et les objets récursifs sont de mode hétérogène.
+Les différents modes sont **null (objet vide), logical, numeric, complex, character**.
+
+Les classes d'objets les plus courantes sont : **vector, matrix, array, factor, data.frame, list.**
+On peut avoir des vecteurs, matrices, tableaux, ... de mode null (objet vide), logical (TRUE, FALSE, NA), numeric, complex, character. Par contre
+les listes et les tableaux peuvent être composés d'éléments hétérogènes. On utilise la commande `class()` pour connaître la classe d'un objet et `str()`pour connaitre la nature des éléments composant l'objet.  
+
+La principale difficulté en R réside dans l'identification des types d'objets manipulés. Nous allons dans ce TP présenter différents objets, les opérations et manipulations basiques que l'on peut faire, ...
+
+On peut stocker un objet dans une variable (ex *a*) à l'aide de `a<- ...` ou `a= ...`. Pour lister les variables actuellement disponibles dans la session de travail, on utilise la fonction `ls()`. Pour effacer une ou plusieurs variables, on utilise la fonction `rm()`. La commande `rm(list=ls())` permet d'effacer toutes les variables en mémoire. 
+
+
+##	Opération sur les scalaires 
+
+::: {.panel-tabset}
+
+### Opérations 
+Les opérations élémentaires sur les scalaires sont `*`,`-`, `+`, `/`, `^`.\
+
+Executez les commandes suivantes. Vous chercherez en particulier à bien identifier les différents types de données :
+
+```{r}
+#| eval: false
+2+2
+exp(10)
+a = log(2)
+a
+b =cos(10)
+b
+a - b
+a*b
+d <- 2 < 3
+d
+dd <- FALSE
+dd - d
+dd + d
+e<- "toto"
+class(e)
+str(e)
+```
+
+```{r}
+#| eval: false
+#| echo: false
+rm(a,b,d,dd,e)
+```
+
+### `is.xxx()/as.xxx()`
+Pour tester si un objet *obj* est de type *xxx*, on utilise la commande 
+`is.xxx(obj)`. On peut aussi contraindre si possible l'objet *obj* au type *xxx* avec la commande `as.xxx(obj)`.
+
+```{r}
+#| eval: true
+
+a = 4.3
+is.numeric(a)
+is.complex(a)
+is.character(a)
+as.character(a)
+b<- "toto"
+is.numeric(b)
+as.list(b)
+```
+
+```{r}
+#| echo: false
+#| eval: true
+rm(a,b)
+```
+
+### Arrondir
+Pour obtenir des valeurs arrondies sur des valeurs numériques, vous pouvez utiliser l'une des commandes suivantes `round()`, `ceiling()`, `floor()`, `trunc()` ou `signif()` (voir l'aide `?round`). 
+Comparez les codes suivantes:
+
+```{r}
+a=1.3579
+floor(a)
+ceiling(a)
+round(a,digits=2)
+signif(a,digits=2)
+is.integer(floor(a))
+is.numeric(floor(a))
+```
+:::
+
+
+##	Booléens et opérations logiques 
+
+En R, un booléen est représenté par *TRUE* ou *FALSE*. Les opérations logiques, `<`, `>`, `<=`, `>=`, `!=` (différent), `==` (égal) retournent *TRUE* ou *FALSE*. On peut définir plusieurs conditions à remplir avec les opérateurs `&` (ET) et `|` (OU).
+
+Attention, R considère qu'un booléen a *FALSE* vaut $0$ et qu'un booléen a *TRUE* vaut $1$. Il est donc capable d'évaluer ` TRUE + 5` bien qu'en toute logique, cela n'a aucun sens!
+
+Voici quelques exemples de manipulation des booléens :
+
+```{r}
+#| eval: true
+a <- 3
+b <- 6
+a<=b
+a!=b
+(b-3==a) & (b>=a)
+(b==a) | (b>=a)
+```
+
+```{r}
+#| echo: false
+rm(a,b)
+```
+
+## Les caractères 
+On donne ici quelques fonctions de base sur la manipulation des chaînes de caractères. Dans le tutoriel, on présente le package **stringr** qui est très utilisé pour gérer et manipuler des chaînes de caractères ([voir ici](https://cmaugis.github.io/TutorielR-V2025/Part4-Ravance.html#manipulation-de-chaines-de-caract%C3%A8re-avec-stringr){target="_blank"}). 
+
+::: {.panel-tabset}
+
+### `paste()`
+
+Pour concaténer, juxtaposer des chaînes de caractères on utilise la fonction `paste()`
+```{r}
+#| echo: true
+#| eval: true
+Ex <- paste("Bonjour", "à","toutes","et","tous","!")
+paste("Bonjour", "à","toutes","et","tous","!",sep="_")
+x <- c("Bonjour", "à", "vous")
+paste(x)
+```
+
+### `nchar()`
+On accède à la longueur d'une chaîne avec la fonction `nchar()`
+```{r}
+#| echo: true
+#| eval: true
+
+Ex
+nchar(Ex)
+```
+
+### `substr()` / `substring()`
+
+La fonction `substr()` permet d’extraire une partie d'une chaîne à partir des attributs « start » et « stop ». On peut aussi remplacer des segments d'une chaine. 
+
+```{r}
+#| echo: true
+#| eval: true
+
+Ex
+substr(Ex,start=3,stop=9)
+substr(Ex, start = 3, stop = 9) <- "@@@"
+Ex
+```
+
+On peut aussi utiliser la fonction `substring()` 
+```{r}
+#| echo: true
+#| eval: true
+Ex <- paste("Bonjour", "à","toutes","et","tous","!")
+substring(Ex, first = 3)
+substring(Ex, first = 3, last = 9) <- "@@@--<"
+Ex
+```
+
+### `strsplit()`
+
+La fonction `strsplit()` permet de scinder une chaîne de caractères :
+```{r}
+#| echo: true
+#| eval: true
+
+Ex <- paste("Bonjour", "à","toutes","et","tous","!")
+strsplit(Ex,split= " ")
+strsplit(Ex,split=c("o"," "))
+```
+La sortie de la fonction `strsplit()` est une liste (voir section sur [`list`](#secList))
+
+### `grep()`
+La fonction `grep()` permet de rechercher les éléments d’une liste.
+```{r}
+#| echo: true
+#| eval: true
+
+Ex1 <- c("tomate","concombre","mais","courgette","poivron","carotte","betterave")
+Ex1
+# Donne les indices des éléments contenant un "o" dans Ex
+grep(pattern="o",Ex1,value=FALSE) 
+# Donne les éléments de Ex1 qui contiennent la lettre "o"
+grep(pattern="o",Ex1, value = TRUE) 
+```
+
+### `gsub()`
+
+Pour remplacer un pattern dans une chaine de caractère, on peut utiliser la fonction `gsub()`. 
+
+```{r}
+#| echo: true
+#| eval: true
+Ex1
+gsub(pattern = "o" , replacement = "@" , Ex1, fixed = TRUE)
+```
+
+```{r}
+#| echo: false
+#| eval: true
+rm(Ex,Ex1,x)
+```
+:::
+
+##	Vecteurs *(vector)*
+
+Un vecteur est un ensemble ordonné d'éléments de même nature (numérique, logique ou alphanumérique). La création d'un vecteur peut se faire par la commande `c(e1,e2,...)`. On peut également générer une séquence avec la commande `seq(a,b,t)` où $a$ est le premier terme, le dernier terme est $\leq b$ et le pas est $t$. Pour créer un vecteur constitué de l'élément $x$ répété $n$ fois, on utilise la commande `rep(x,n)`. 
+
+### Exemples 
+On donne ici quelques exemples à tester sous R pour vous familiariser avec les vecteurs. En particulier, vous pouvez découvrir des fonctions utiles avec les vecteurs comme `length()`, `sum()`, `sort()`, ... , les opérations usuelles, l'extraction d'éléments d'un vecteur, ...  
+
+::: {.panel-tabset}
+
+#### Commande `c(...)`
+```{r}
+d <- c(2,3,5,8,4,6)
+d
+is.vector(d)
+c(2,5,"toto")
+1:10
+```
+
+#### Commande `seq(...)`
+```{r}
+seq(1,10)
+seq(from=1,to=20,by=2) 
+seq(1,20,by=5)
+seq(1,20,length=5)
+```
+
+#### Commande `rep(...)`
+```{r}
+rep(5,times=10)
+rep(c(1,2),3)
+rep(c(1,2),each=3)
+```
+
+#### Extraire des éléments
+```{r}
+d
+d[2]
+d[2:3]
+d[c(1,3,6)]
+d[-3]
+d[-(1:2)]
+```
+
+#### Opérations
+
+Additionner ou soustraire un scalaire d'un vecteur
+```{r}
+d+4
+d-4
+```
+Multiplier ou diviser un vecteur par un scalaire
+```{r}
+2*d
+d/3
+```
+Multiplier/ diviser deux vecteurs terme à terme
+```{r}
+e<- rep(2,6)
+d*e
+d/e
+```
+
+#### Fonctions usuelles
+```{r}
+d <- c(2,3,5,8,4,6)
+d
+```
+
+Longueur d'un vecteur  
+```{r} 
+length(d)
+```
+Somme des termes d'un vecteur numérique
+```{r} 
+sum(d)
+```
+Somme des termes cumulés d'un vecteur numérique
+```{r}
+cumsum(d)
+```
+Différence des termes successifs d'un vecteur numérique
+```{r}
+diff(d)
+```
+Vérifier si *d* est un vecteur 
+```{r} 
+is.vector(d)
+```
+Transposition d'un vecteur
+```{r}
+t(d)
+```
+
+Produit scalaire
+```{r}
+t(d)%*%e
+```
+
+NA (Not Available) signale une donnée manquante
+```{r}
+d[3] <- NA
+d
+is.na(d)
+any(is.na(d))
+all(is.na(d))
+```
+
+Autres fonctions interrsantes avec les vecteurs : `abs()`, `sort()`, `order()`, `which()`, ... 
+```{r}
+a<-c(3,-1,5,2,-7,3,9)
+abs(a)
+sort(a)
+order(a)
+```
+
+```{r}
+b = a==3
+b
+sort(b)
+```
+
+```{r}
+text<-c("petit","moyen","grand")
+is.vector(text)
+```
+
+```{r}
+f = c(a=12,b=26,c=32,d=41)
+f
+names(f)
+f["a"]
+names(f)<-c("a1","a2","a3","a4")
+f
+```
+
+Notez la différence entre les commandes suivantes :
+
+```{r}
+f>30
+f[f>30]
+which(f>30)
+```
+
+
+```{r}
+f[2] <- 22
+f+100
+```
+
+Etonnant ces commandes suivantes, non ? 
+```{r}
+f
+d
+f+d
+```
+
+On peut appliquer une fonction à tous les éléments d'un vecteur facilement. 
+
+```{r}
+cos(f)
+```
+
+```{r,echo=F}
+rm(d,e,f,b,a)
+```
+:::
+
+### Exercice 
+
+::: {.panel-tabset}
+#### Enoncé
+Question 1 : Créer les vecteurs suivants :
+
+  + le vecteur $a$ constitué des entiers pairs jusqu'à 30
+  + le vecteur $b$ contenant $v=5$, deux fois la valeur de $v$, puis un tiers de la valeur de $v$, puis trois fois $v^2$, puis $\sqrt{v}$, puis le quatrième élément de $a$.
+  + le vecteur $c$ contenant 6 chiffres compris entre 4 et 30 avec un écart constant entre éléments successifs.
+  + le vecteur $d$ contenant la somme des éléments de $c$, puis la longueur de $b$, puis 5 fois le chiffre 3.
+  
+Question 2 :  Extraire du vecteur $a$ : 
+
+  + le quatrième élément
+  + tous les éléments sauf le quatrième
+  + tous les éléments supérieurs à 10
+  
+Question 3 :  À quoi sert la fonction `unique` ? Illustrer son fonctionnement sur un exemple.
+
+#### Votre réponse
+
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+
+# AIDEZ-VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+:::
+
+
+##	Matrices (*matrix*)
+
+Comme les vecteurs, les matrices sont de mode quelconque mais ne contiennent que des éléments de même nature. Pour créer une matrice, on utilise la commande `matrix(vec,nrow=n,ncol=p)` où *vec* est le vecteur contenant les éléments de la matrice de taille $n$ par $p$, qui seront rangés en colonne sauf si l'option *byrow=T* est utilisée.
+
+### Exemples 
+On donne ici quelques exemples à tester sous R pour vous familiariser avec les matrices. En particulier, vous pouvez découvrir des fonctions utiles avec les matrices comme `dim()`, `t()`, `cbind()`, `rbind()`... , les opérations usuelles dont la différence entre `A*B` et `A%*%B`, l'extraction d'éléments d'une matrice, ...  
+
+::: {.panel-tabset}
+#### `matrix()`
+```{r}
+A = matrix(1:15,ncol=5)
+A
+
+class(A)
+B = matrix(1:15,nc=5,byrow=T)
+B2 = B
+B2[1,1]="toto"
+B2
+```
+
+```{r}
+rownames(A)=c(paste("ligne",1:3,sep=""))
+A
+```
+
+#### Extraire
+```{r}
+A
+A[1,3]
+A[,2]
+A[2,]
+A[1:3,c(2,5)]
+A[1:3,-c(2,5)]
+```
+
+#### `cbind() / rbind()`
+Pour concaténer deux matrices, on peut utiliser les fonctions `rbind()` ou `cbind()`. 
+
+```{r}
+A
+B
+cbind(A,B)
+rbind(A,B)
+```
+
+#### Fonctions utiles
+
+Dimension d'une matrice
+```{r}
+dim(A)
+```
+
+Nombre de lignes et de colonnes
+```{r}
+nrow(A)
+ncol(A)
+```
+
+Transposée et déterminant d'une matrice
+```{r}
+t(A)
+det(A[,3:5])
+```
+
+Inversion d'une matrice
+```{r}
+solve(A[1:2,2:3])
+```
+
+Matrice diagonale et diagonale d'une matrice
+```{r}
+diag(A)
+diag(1:5)
+```
+
+Matrice de booléens
+```{r}
+A>5
+A[A<5]<-0
+A
+```
+
+Quelques autres fonctions sur les matrices
+```{r}
+colSums(A)
+apply(A,2,sum)
+rowSums(A)
+apply(A,1,sum)
+rowMeans(A)
+apply(A,1,mean)
+apply(A,1,max)
+```
+
+Remarque : on reverra dans la section [Programmation](#secProg) la fonction `apply()` qui permet en particulier d'éviter les boucles *for*.\
+
+#### Opérations
+
+Attention à la multiplication matricielle `%*%` et la multiplication terme à terme `*`!
+
+Opérations terme à terme de 2 matrices
+```{r}
+A+B
+A*B
+```
+
+Multiplication de matrices
+```{r}
+t(B) %*%A
+```
+
+Multiplication par un scalaire
+```{r}
+5*A
+```
+:::
+
+### Exercice 
+
+::: {.panel-tabset}
+
+#### Enoncé
+1. Créer la matrice $A=\left(\begin{array}{c c c } 3 & 3 & 3\\ 4 & 4 & 4\\ 5 & 5 & 5\end{array}\right).$
+
+2. Ajouter 2 à tous les éléments de $A$.
+
+3. Créer la matrice $B$ en ajoutant la ligne $(1,2,3)$ à $A$, puis la colonne $(1,1,1,1)'$. Déterminer la dimension de $B$.
+
+4. Extraire de $B$ la sous-matrice $C$ composée des deux premières colonnes et des deux dernières lignes. Calculer sa transposée et son déterminant. Inverser cette sous-matrice $C$. 
+
+
+#### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+
+:::
+
+##	Listes *(list)* {#secList}
+
+Une liste est une collection ordonnée d'objets qui peuvent être de nature différente. Les listes sont
+en particulier utilisées par certaines fonctions (cf section [Programmation](#secProg)) pour renvoyer des résultats complexes sous
+forme d'un seul objet.
+On utilise la fonction `list(nom1=el1,nom2=el2,...)` (l'utilisation
+des noms étant facultative) pour générer une liste. On peut accéder à chaque élément de la liste à l'aide de son index entre double crochets `  [[...]]`, ou par son nom précédé du signe `$`.
+
+### Exemples 
+
+::: {.panel-tabset}
+#### `list(...)`
+```{r}
+x = list("toto",1:8)
+x
+class(x)
+```
+
+Création d'une liste avec des noms aux éléments
+```{r}
+y = list(matrice=matrix(1:15,ncol=5),
+         vecteur=seq(1,20,by=5),
+         texte="toto",scalaire=8)
+y
+```
+
+#### Extraction
+Extraction d'un élément par son numéro 
+```{r}
+x[[1]]
+```
+
+Attention, cette commande n'est pas possible: 
+```{r, eval=F}
+x[[1]]+1
+```
+
+par contre celle-ci est possible
+```{r}
+x[[2]]+10
+```
+
+```{r}
+y[[1]]
+y$matrice
+y$vec
+y[c("texte","scalaire")]
+```
+
+#### Fonctions utiles
+
+```{r}
+names(y)
+length(y)
+length(y$vecteur)
+cos(y$scal)+y[[2]][1]
+summary(y)
+```
+:::
+
+### Exercice 
+
+::: {.panel-tabset}
+
+#### Enoncé
+
+1. Créer une liste contenant le nom de trois matières, les notes de 5 élèves pour chacune de ces matières, l'âge des 5 élèves et la filière (PO) d'appartenance de ces 5 élèves.
+
+2. Récupérer les notes du 4ème élève
+
+3. Créer une matrice contenant les notes et l'âge des 5 élèves.
+
+#### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+:::
+
+##	Data frames
+Sous R, un data.frame est analogue à une matrice mais le contenu des colonnes
+peut être ici hétérogène. Un tableau de données est un ensemble de vecteurs rangés colonne par colonne, chaque colonne correspondant à une variable, chaque ligne à un individu. En particulier, lors d'études statistiques, les données à étudier sont souvent représentées par un data.frame sous R. Pour créer un tableau de données, on peut regrouper des variables de même longueur à
+l'aide de la commande `data.frame(nom1=var1,nom2=var2,...)`. On peut par exemple transformer une matrice en un tableau de données en utilisant la commande `as.data.frame(mat)`.
+
+### Exemple 
+On donne ici quelques exemples à tester sous R pour vous familiariser avec les data.frames. En particulier, vous pouvez découvrir des fonctions utiles dont `summary()`, `attach()`, ... 
+
+::: {.panel-tabset}
+#### `data.frame()`
+```{r}
+# Création du data.frame H
+taille = runif(12,150,180)
+masse = runif(12,50,90)
+sexe = rep(c("M","F","F","M"),3)
+H = data.frame(taille,masse,sexe)
+H
+class(H)
+```
+
+#### `summary()/head()`
+La fonction `summary()` permet de résumer le contenu des différentes colonnes d'un data.frame.
+```{r}
+summary(H)
+```
+La fonction `head()` permet de visualiser les premières lignes d'un data.frame
+```{r}
+head(H)
+```
+
+#### data.frame / list/matrix
+Au travers de ces quelques commandes, vous pouvez voir les analogies entre data.frame, list et matrix mais restez prudent sur la nature de l'objet que vous manipulez!
+```{r}
+H[1,]
+H$taille
+H$sexe
+is.data.frame(H)
+is.matrix(H)
+MH = as.matrix(H)
+MH
+summary(MH)
+as.list(H)
+```
+
+#### `attach()/detach()`
+
+La fonction `attach()` permet d'accéder aux variables d'un data.frame sans appeler le data.frame.
+
+La fonction `detach()` peut être utilisée pour supprimer la variable d'un data.frame, qui était précédemment attachée avec `attach()`.
+
+```{r}
+rm(taille)
+H$taille
+attach(H)
+taille
+detach(H) # taille est alors introuvable
+```
+:::
+
+### Exercice 
+
+::: {.panel-tabset}
+#### Enoncé
+On reprend le data.frame $H$ contruit dans la sous-section Exemple. 
+
+1. Extraire la masse des individus dont la taille est supérieure à 160.
+2. Extraire la masse et le sexe de ces mêmes individus.
+3. Extraire la taille des individus de sexe masculin dont la masse est inférieure à 80 (c'est possible en une seule ligne avec `&`).
+
+#### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+:::
+
+# Programmation {#secProg}
+
+Cette partie est consacrée à la création des fonctions, les instructions de contrôle, la syntaxe des itérations et la fonction **apply** (et ses dérivées).
+
+##	Créer une fonction
+Il est possible sous R de construire ses propres fonctions. Il est conseillé d'écrire sa fonction dans un fichier `nomfonction.R`, puis dans la console, de charger la fonction grâce à la commande `>source("nomfonction.R")` et de l'utiliser. On peut également écrire directement la fonction dans la console. De manière générale, la définition d'une nouvelle fonction passe par l'expression suivante :
+
+```{r}
+#| eval: false
+nomfonction=function(arg1[=exp1],arg2[=exp2],...){
+    bloc d instructions
+    sortie = ...
+    return(sortie)
+}
+```
+
+Les accolades signalent le début et la fin du code source de la fonction, les crochets indiquent le caractère facultatif des valeurs par défaut des arguments.
+L'objet *sortie* contient le ou les résultats retournés par la fonction, on peut en particulier utiliser une liste pour retourner plusieurs résultats.
+
+
+### Exemples 
+
+::: {.panel-tabset}
+#### Exemple 1
+
+```{r}
+MaFonction=function(x){x+2}
+MaFonction
+MaFonction(3)
+x = MaFonction(4)
+x
+```
+
+```{r}
+Fonction2=function(a,b=7){a+b}
+Fonction2(2,b=3)
+Fonction2(5)
+```
+
+
+#### Exemple 2
+Fonction retournant le périmètre et la surface d'un cercle à partir de son rayon :
+```{r}
+CalculsCercle=function(r){
+    p=2*pi*r
+    s=pi*r*r
+    resultats = list(perimetre=p,surface=s)
+    return(resultats)
+}
+res=CalculsCercle(3)
+res
+res$surf
+```
+:::
+
+### Exercice
+
+::: {.panel-tabset}
+#### Enoncé
+1. Construire une fonction qui prend en argument deux réels x et y et qui retourne l'arrondi à 3 chiffres après la virgule de  $x^2 + y$. (Vous pouvez vous aider de la fonction `round()`).
+2. Construire une fonction qui permet de calculer la densité de probabilité d'une loi normale de moyenne $m$ et d'écart-type $s$ au point $x$.
+
+
+#### Votre réponse
+
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+:::
+
+##	Structures de contrôle et itérations
+
+### Instructions conditionnelles
+La syntaxe `if(condition){instructions}` permet de calculer les instructions uniquement si la condition est vraie.
+Le code `if(condition){A}else{B}` calcule les instructions A si la condition est vraie et les instructions B sinon. On peut également utiliser `ifelse`.
+
+Dans l'exemple suivant, les deux commandes sont équivalentes :
+```{r,eval=F}
+if(x>0){y=x*log(x)}else{ y=0}
+y=ifelse(x>0,x*log(x),0)
+```
+
+
+#### Exercice 
+
+::: {.panel-tabset}
+##### Enoncé
+Soit $X$ une variable aléatoire de loi de Poisson de paramètre 2. Écrire une fonction qui prend en argument un réel $x$ et qui retourne la probabilité que $X$ soit égal à $x$.
+
+##### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+:::
+
+### Itérations
+On utilise les boucles pour exécuter plusieurs fois une instruction ou un bloc d'instructions. Les trois types de boucle sont :
+
+- la boucle **for** :
+    `for(var in seq){ commandes }`
+- la boucle **while** :
+    `while(cond){ commandes }`
+- la boucle **repeat** :
+    `repeat { commandes ; if (cond) break }`
+
+Dans une boucle **for**, le nombre d'itérations est fixe alors qu'il peut être infini pour les boucles **while** et **repeat**!
+
+#### Exemples 
+Pour illustrer les trois types de boucles, on a codé de trois façons différentes la somme des éléments d'un vecteur `x` ce qui correspond à la fonction `sum()` de R. 
+
+::: {.panel-tabset}
+##### Exemple `for()`
+```{r}
+somme1=function(x){
+t = 0
+for (i in 1:length(x))
+  t = t+x[i]
+return(t)
+}
+
+x = seq(1:10)
+somme1(x)
+sum(x)
+```
+
+##### Exemple `while()`
+```{r}
+somme2=function(x){
+t = 0
+i = 1
+while (i<=length(x)){
+t = t+x[i]
+i = i+1
+}
+return(t)
+}
+x = seq(1:10)
+somme2(x)
+sum(x)
+```
+
+##### Exemple `repeat()`
+```{r}
+somme3=function(x){
+t = 0
+i = 1
+repeat{
+t = t+x[i]
+i = i+1
+if (i> length(x)) break
+}
+return(t)
+}
+
+x = seq(1:10)
+somme3(x)
+sum(x)
+```
+:::
+
+#### Exercice 
+
+::: {.panel-tabset}
+##### Enoncé
+1. Écrire une fonction *ma.variance* qui calcule la variance empirique corrigée pour un vecteur $x = (x_1, . . . , x_n)$.
+Comparer avec la fonction prédéfinie `var()`.
+2. Écrire une fonction qui calcule les $n$ premiers termes de la suite de Fibonacci ($u_1=0, u_2=1, \forall n>2, u_n=u_{n-1}+u_{n-2}$)
+3. Ecrire une fonction qui prend en entrée un entier $x$ et retourne sa factorielle $x!$ avec une boucle *for()* puis avec une boucle *while()*.
+
+##### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+:::
+
+##	`apply()` et  ses variantes 
+
+Il est recommandé d'éviter les boucles très chronophages. On peut utiliser pour cela la fonction `apply()` et ses variantes `sapply()`, `lapply()`, `tapply()` sur des vecteurs ou matrices.
+
+La fonction `apply()` permet d'appliquer la même fonction *FUN* sur toutes
+les lignes *(MARGIN=1)* ou les colonnes *(MARGIN=2)* d'une matrice *MAT* : `apply(MAT , MARGIN, FUN)`.
+
+Les fonctions `lapply()` et `sapply()` calculent la même fonction sur tous les éléments d'un vecteur ou d'une liste.
+La commande `lapply(X,FUN, ARG.COMMUN)` permet d'appliquer la fonction *FUN* à tous les éléments du vecteur ou de la liste *X*. Les valeurs de *X* sont affectées au premier argument de la fonction *FUN*. Si la fonction *FUN* a plusieurs paramètres d'entrée, ils sont spécifiés dans *ARG.COMMUN*. Cette fonction retourne le résultat sous la forme de listes. `sapply()` est une fonction similaire à `lapply()` mais le résultat est retourné sous forme de vecteurs, si possible.
+
+La fonction `tapply()` applique une fonction *FUN* sur les sous-groupes d'un
+vecteur *X* définis par une variable de type factor *GRP* : `tapply(X,GRP,FUN,...)`.
+
+### Exemples
+```{r}
+data(iris)
+head(iris)
+apply(iris[,1:4],2,sum)
+apply(iris[,1:4],1,sum)
+lapply(iris[,1:4],sum)
+sapply(iris[,1:4],sum)
+tapply(iris[,1],iris[,5],sum)
+```
+
+### Exercices 
+
+::: {.panel-tabset}
+#### Enoncé 1
+Soit la fonction suivante :
+```{r,eval=F}
+Exo1=function(M){
+  res=rep(0,5)
+  for (i in 1:5){
+    tmp=0
+    for (j in 1:4) {tmp = tmp + M[i,j]}
+    res[i]=tmp
+  }
+return(res)
+}
+
+M=matrix(1:20,nrow=5,ncol=4)
+Exo1(M)
+```
+
+Proposer une fonction équivalente sans aucune boucle. 
+
+#### Enoncé 2
+1. Réaliser une liste de $100$ réalisations d'une loi normale $\mathcal{N}(m,1)$ pour $m=-2$, $0$ et $2$ respectivement en utilisant `lapply()` et `rnorm()`.
+2. Créer un vecteur contenant la moyenne de chaque échantillon de la question 1. 
+
+
+#### Votre réponse
+
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+:::
+
+# Bases des graphiques avec ggplot
+
+R contient de base des fonctions dédiées aux graphiques. Les fonctions graphiques principales comme `plot()` ouvrent une nouvelle fenêtre à l’execution. Les fonctions graphiques secondaires permettent d’ajouter des éléments à un graphique. Une présentation succinte des graphiques de base avec R est disponible [ici](https://cmaugis.github.io/TutorielR-V2025/Part2-InitR.html#premiers-graphiques){target="_blank"}.
+
+Il est maintenant usuel de faire des représentations graphiques à l'aide du package `ggplot2`. Nous allons présenter dans cette partie quelques notions sur les graphiques avec [`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"}. Ce package est basé sur une syntaxe particulière (il faut oublier les graphiques de base de R) mais robuste et efficace pour la construction de graphiques complexes. Elle part du principe (comme tout package de tidyverse) que les données relatives au graphique sont stockées dans un tableau (data.frame ou tibble). 
+
+Un graphique en `ggplot2` s'initialise avec la fonction `ggplot()` qui prend en argument le jeu de données étudié. Par exemple, 
+
+```{r}
+library(ggplot2)
+data(iris)
+gEx <- ggplot(data=iris)
+```
+
+Pour l'instant, on ne voit rien mais pourtant l'objet `gEx` contient des informations:
+```{r}
+summary(gEx)
+names(gEx)
+gEx$layers
+```
+
+mais pour l'instant son `layers` est vide. 
+
+On ajoute ensuite des éléments graphiques, appelés `geom`, à l'objet graphique grâce à l'opérateur `+` et on précise à l'aide de la fonction `aes()` les données à utiliser en argument du `geom`. Par exemple, si on veut tracer le nuage de points entre les variables `Sepal.Length` et `Sepal.Width` :  
+
+```{r}
+ggplot(data=iris,aes(x=Sepal.Length,y=Sepal.Width))+
+   geom_point()
+```
+
+Parmi les `geom` les plus utilisés, on peut citer
+
+  - `geom_point()` (nuage de points)
+  - `geom_line()`(trace des lignes)
+  - `geom_bar()` (représentation en bâtons) 
+  - `geom_boxplot()` (boxplot)
+  - `geom_violin()` (violin plot)
+  - `geom_histogram()` (histogramme)
+  - `geom_density()` (densité)
+  - `geom_smooth()`
+
+On peut ajouter un **mappage**, c'est à dire une mise en relation entre un attribut graphique d'un `geom` et une variable du tableau de données. Par exemple, on peut mettre des couleurs à un nuage de points en fonction d'une variable qualitative, ... Il faut bien distinguer un mappage d'une modification d'un attribut graphique sans lien avec une variable. Une règle importante à retenir est donc
+
++ pour définir un mappage (relation entre les valeurs d'une variable et un attribut graphique), on le déclare dans `aes()`
++ pour modifier un attribut graphique de la même manière pour tous les points, on le définit en-dehors de la fonction `aes()`.
+
+Par exemple,
+
+```{r}
+ggplot(data=iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+
+   geom_point()
+```
+
+```{r}
+ggplot(data=iris,aes(x=Sepal.Length,y=Sepal.Width))+
+   geom_point(color="blue")
+```
+
+On peut représenter plusieurs `geom` sur un même graphique simultanément, il suffit d'utiliser l'opérateur `+` pour les ajouter au fur et à mesure. 
+Par exemple,
+
+```{r}
+ggplot(data=iris,aes(x=Species,y=Sepal.Width))+
+  geom_violin()+
+   geom_point(col = "blue", alpha = 0.2,position="jitter")
+```
+
+Les *scales* permettent de modifier la façon dont un attribut graphique est lié aux valeurs d'une variable. Pour les modifier, on ajoute un nouvel élément de la forme `scale_<attribut>_<type>` à l'objet graphique ggplot2 avec `+`. Les fonctions *scale* les plus connues sont :
+
++ `scale_size()` (avec son argument `range`) pour modifier les tailles minimales, maximales, ...
++ `scale_x()` et `scale_y()` pour modifier l'axe `x`et l'axe `y` respectivement 
++ `scale_x_continuous()` (resp. `scale_x_discrete()`) pour modifier l'axe des `x` dans le cas d'une variable quantitative (resp. une variable qualitative)
++ `scale_y_continuous()` (resp. `scale_y_discrete()`) pour modifier l'axe des `y` dans le cas d'une variable quantitative (resp. une variable qualitative)
++ `scale_color()` pour modifier les couleurs de dessin
++ `scale_fill()` pour modifier les couleurs de remplissage
+
+Pour les couleurs, on peut spécifier un gradient de couleur sur une variable quantitative avec `scale_color_gradient()`, modifier manuellement la palette de couleur avec `scale_color_manual()`, faire appel à une palette de couleur prédéfinie (par exemple en utilisant le package [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html){target="_blank"} avec `scale_color_viridis`, 
+en s'appuyant sur les palettes disponibles dans [ColorBrewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3){target="_blank"} avec `scale_color_brewer()`),  ... 
+
+
+```{r}
+ggplot(data=iris,aes(x=Sepal.Length,y=Sepal.Width,color=Species))+
+  geom_point()+
+  scale_size("Petal.Length", range = c(1,7),breaks=seq(0,7,0.5))+
+  scale_x_continuous("Sepal.Length",limits=c(4,10))+
+  scale_y_continuous("Sepal.Width",limits=c(2,5))
+```
+
+
+Remarque : on peut modifier certains éléments avec une commande spécifique comme 
+
++ `ggtitle()` pour modifier le titre
++ `xlab()`et `ylab()` pour modifier l'intituler de l'axe des abscisses et des ordonnées respectivement
+
+En bref, les possibles avec `ggplot2` sont infinis car de nombreux éléments sont personnalisables. Voici quelques références pour les graphiques en `ggplot2` parmi les nombreuses ressources disponibles sur le web :
+
++ Le livre *Ggplot2: Elegant Graphics for Data Analysis* de H. Wickham. [@ggplot2]
++ Le [site web de ggplot2]("https://ggplot2.tidyverse.org/"){target="_blank"} 
++ [The R Graph Gallery](https://www.r-graph-gallery.com/ggplot2-package.html){target="_blank"}
++ [The Cheat Sheet de ggplot 2](https://thinkr.fr/pdf/ggplot2-french-cheatsheet.pdf){target="_blank"} 
+
+
+
+
+
+#	Entrée / Sortie
+
+## Importation d'un jeu de données
+
+Lire les explications données dans le tutoriel. 
+
+### Exercice 
+
+::: {.panel-tabset}
+#### Enoncé
+Executez les commandes suivantes pour préparer l'exercice. 
+
+```{r}
+#| warning: False
+
+data(iris)
+dir.create("DataAux")
+write.table(iris,file="DataAux/iris1.txt",sep=";",row.names=F,col.names=T)
+rownames(iris)=paste("indiv",1:nrow(iris),sep="-")
+write.table(iris,file="DataAux/iris2.csv",row.names=T,col.names=F)
+write.table(iris,file="DataAux/iris3.txt",quote=FALSE, dec=",",sep="*")
+```
+
+Chargez à l'aide de la fonction `read.table()` les données *iris1.txt*, *iris2.csv* et *iris3.txt* disponibles dans le dossier *DataAux*. 
+
+
+#### Votre réponse
+```{r}
+#  A COMPLETER POUR REPONDRE A L'EXERCICE
+# AIDEZ VOUS DE LA CORRECTION DISPO SUR LE TUTORIEL SI VOUS ETES BLOQUE
+```
+:::
+
+##	Exportation 
+
+Lire les explications données dans le tutoriel [ici](https://cmaugis.github.io/TutorielR-V2025/Part2-InitR.html#exportation){target="_blank"} 
+
+
+
+<!--
+## Editer des rapports avec Rmarkdown
+
+L'extension [**Rmarkdown**](https://rmarkdown.rstudio.com/index.html){target="_blank"} permet de créer des documents dans différents formats (html, pdf, docx, slides, ...) qui contiennent du texte, du code (en R mais pas que!), les résultats, ...
+Par exemple, les sujets de TP de ce cours sont rédigés en Rmarkdown.  
+Vous devrez également rédiger le rapport de votre projet en Rmarkdown. 
+Nous allons donner ici des éléments de base pour la création de documents avec Rmarkdown. Pour plus de détails, vous pouvez consulter l'aide mémoire de Rmarkdown (accessible via `Help -> Cheatsheets -> Rmarkdown Cheat Sheet`) et le livre en ligne  [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/){target="_blank"} de Y. Xie, J. J. Allaire, G. Grolemund.  
+
+### Etapes de création d'un document
+
+Un document Rmarkdown est un fichier enregistré avec l'extension `.Rmd`. Pour créer un nouveau document, allez dans `File-> NewFile-> Rmarkdown...` (ou cliquez sur l'icone nouveau document et choisissez Rmarkdown). 
+
+<h4><b><p style="color:blue;">Exercice :</p></b></h4> 
+
+> Créez un nouveau document Rmarkdown au format pdf avec le titre et l'auteur de votre choix. 
+> Vous pouvez constater qu'un nouveau document prérempli vient de s'ouvrir dans RStudio. 
+> Nous allons maintenant détailler le contenu de ce document. 
+
+Un document Rmarkdown débute toujours par **l'en-tête** qui est encadré par 3 tirets `---`.
+Cet en-tête contient au moins les métadonnées du document suivantes : le titre, l'auteur, la date, le format de sortie (`output`). 
+On peut préciser des options au document final en ajoutant des sous-options à droite du `output`. Il est également possible de spécifier des options différentes selon les formats. 
+Voici une liste avec quelques éléments :
+
++ `number_section : true` permet de numéroter les sections
++ `highlight` permet de spécifier le style syntaxique (par ex `default`, `tango`, `pygments`, `kate`, ...). 
++ on peut ajouter son propre fichier de style .css avec l'option `css`
++ on peut préciser des options concernant les figures avec `fig_width`, `fig_height`, `fig_caption`, `dev`, ...
++ on peut ajouter une bibliographie à partir d'un fichier `.bib` avec l'option `bibliography`
+
+On a ensuite le corps du document qui peut contenir 
+
++ du texte selon la syntaxe markdown 
++ des blocs de code (appelés *chunks*) en R, Python, ... 
++ des formules mathématiques (écrites en latex entre `$ ... $`)
++ des images, tableaux, références, ....
+
+Vous pouvez compiler à tout moment le document Rmarkdown en cliquant sur le bouton `Knit`. Un onglet R Markdown s’ouvre alors dans la même zone que l'onglet *Console* pour indiquer la progression de la compilation et les messages d'erreur éventuels. Une fois la compilation effectuée, le document obtenu s'ouvre et vous pouvez admirer le rendu. 
+
+**Remarque**: Pour la compilation d'un document en pdf, il est nécessaire d'avoir installé un compilateur de Latex sur son ordinateur. 
+
+<h4><b><p style="color:blue;">Exercice :</p></b></h4> 
+
+> Modifiez les options dans l'en-tête de votre fichier Rmarkdown puis compilez le document pour constater l'impact sur le document généré.
+
+
+### Quelques éléments markdown {#sectMarkdown}
+
+Le texte d'un document Rmarkdown est régi par le langage markdown. 
+Regardez les quelques éléments de syntaxe et de mise en forme 
+disponible [ici](https://rstudio.github.io/cheatsheets/html/rmarkdown.html?_gl=1*1t61k1h*_ga*MTY5MTU0NjIwNS4xNzI5MDc4NDE1*_ga_2C0WZ1JHG0*MTcyOTA3ODQxNC4xLjEuMTcyOTA3ODQzMC4wLjAuMA..#write-with-markdown){target="_blank"} ou consulter l'aide mémoire de Rmarkdown (accessible via `Help -> Cheatsheets -> Rmarkdown Cheat Sheet`). 
+
+**Remarque: ** Si vous avez organisé votre document avec des sections / sous-sections en faisant débuter une ligne par un ou plusieurs `#`, alors vous pouvez cliquer sur l'icone `Outline` à droite de la barre d'outils associée au fichier R Markdown pour visualiser la table des matières générée automatiquement qui vous permet de naviguer facilement dans le document. 
+
+Pour insérer du code dans un document Rmarkdown, on utilise des blocs appelés **chunk**. Pour cela, il suffit de cliquer sur l'icone d'insertion d'un chunk  dans la barre d'outils d'un document Rmarkdown. Il est possible d'insérer un chunk de code R mais pas seulement (par exemple on peut insérer du code Python). Pour du code R, un chunk de la forme $\textrm{```{r} .... ```}$ s'insère alors dans le document.
+On peut alors saisir du code R dans ce chunk. On peut ajouter un nom à un bloc et préciser des options dans les accolades `{r nomdubloc, ....}`, par exemple
+
++ eval (TRUE par défaut, ou FALSE) : détermine si le code R doit être évalué ou non,
++ echo (TRUE par défaut, ou FALSE) : détermine si le code R doit être affiché ou non,
++ results ('markup' par défaut, 'hide', 'hold' ou 'asis') : détermine comment les sorties doivent être affichées,
++ error (FALSE par défaut, ou TRUE) : détermine si les messages d'erreur doivent être affichée,
++ warning (TRUE par défaut, ou FALSE) : détermine si les messages d'avertissement doivent être affichées.
+
+Ces options peuvent être modifiées manuellement ou en utilisant l'interface graphique (en cliquant sur l'icone d'engrenage situé en haut à droite de chaque bloc). 
+
+<h4><b><p style="color:blue;">Exercice :</p></b></h4> 
+
+> - Ajoutez `# Titre 1` avant `## RMarkdown`
+> - Modifiez ```{r cars}``` en ```{r cars, eval=F}```
+> - Compilez le document pour voir les différences
+
+
+De manière générale, il est recommandé de
+
+  - travailler dans le document R Markdown (en lançant balise R par balise
+R, avec la petite flèche verte en haut à droite de chaque bloc, ou en
+lançant la ligne de code contenant le curseur en tapant Ctrl Enter),
+  - commenter les résultats obtenus (en dehors des balises R) au fur et à
+mesure,
+  - ne compiler le document (Knit) qu’à la fin.
+
+**Pour la suite du TP, récupérez sur moodle le document "TP1-InitR.Rmd", sauvegardez-le dans votre dossier de travail et ouvre-le dans RStudio. C'est le document .Rmd qui a généré cet énoncé de TP et que vous allez compléter dans la suite.**
+-->
+
